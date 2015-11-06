@@ -20,6 +20,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsondecoder.dao.CHObjectDao;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.utilities.FileFinder;
 
@@ -99,9 +100,10 @@ public class CHObjectRepositoryTest {
 				}
 			}
 			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
+			System.out.println("Unknown I/O error.");
 		}
 		return result;
     }

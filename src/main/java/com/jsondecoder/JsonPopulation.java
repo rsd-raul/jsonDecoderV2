@@ -17,8 +17,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsondecoder.dao.CHObjectDao;
 import com.jsondecoder.domain.CHObject;
-import com.jsondecoder.repository.CHObjectDao;
+import com.jsondecoder.service.CHObjectService;
 import com.jsondecoder.utilities.FileFinder;
 
 @SpringBootApplication
@@ -28,6 +29,8 @@ public class JsonPopulation implements CommandLineRunner {
 //	JdbcTemplate jdbcTemplate;
 	@Autowired
 	CHObjectDao chObjectDao;
+	@Autowired
+	CHObjectService chObjectService;
 	
 	public void query06() {
 
@@ -47,16 +50,21 @@ public class JsonPopulation implements CommandLineRunner {
 	private void insertOnH2(CHObject chObject){
 		chObjectDao.add(chObject);
 	}
+	
+	private void insertOnH2recuperaId(CHObject chObject){
+		int aux = chObjectDao.create(chObject);
+		System.out.println(aux);
+	}
 
 	@Override
 	public void run(String... arg0) throws Exception {
 		
-		EmbeddedDatabase db = buildDatabase();
+		buildDatabase();
 		List<CHObject> chObjects = decodeJson();
 		
 		System.out.println(chObjectDao.findAll().size());
 		for( CHObject aux : chObjects)
-			insertOnH2(aux);
+			insertOnH2recuperaId(aux);
 		System.out.println(chObjectDao.findAll().size());
 		
 //		System.out.println(chObjectDao.getById(68268203));

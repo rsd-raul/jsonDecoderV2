@@ -50,9 +50,10 @@ public class JsonDecoder {
 				}
 			}
 			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
+			System.out.println("Unknown I/O error.");
 		}
 	}
 }
