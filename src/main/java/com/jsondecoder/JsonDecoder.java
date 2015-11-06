@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.utilities.FileFinder;
 
-public class Application {
+public class JsonDecoder {
 
 	public static void main(String[] args){
 		
