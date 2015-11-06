@@ -1,7 +1,14 @@
 package com.jsondecoder.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
+@Entity
+@Table(name="CHObjects_Participants_Roles")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Participation {
 	
 	@JsonUnwrapped

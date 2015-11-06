@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -17,71 +18,40 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsondecoder.dao.CHObjectDao;
 import com.jsondecoder.domain.CHObject;
+import com.jsondecoder.repository.CHObjectRepository;
 import com.jsondecoder.service.CHObjectService;
 import com.jsondecoder.utilities.FileFinder;
 
+@Import(DefaultConfig.class)
 @SpringBootApplication
 public class JsonPopulation implements CommandLineRunner {
-
-//	@Autowired
-//	JdbcTemplate jdbcTemplate;
+	
 	@Autowired
-	CHObjectDao chObjectDao;
+	CHObjectRepository chObjectRepository;
 	@Autowired
 	CHObjectService chObjectService;
 	
-	public void query06() {
-
-		// Get chObject #1
-		CHObject chObject = chObjectDao.getById(68268203);
-		System.out.println("Before: " + chObject.toString());
-		
-		// CHObject went through gender reassignment surgery
-		chObject.setDescription("ttteeessst");
-		chObjectDao.save(chObject);
-		
-		// Get the chObject again to ensure change was saved
-		chObject = chObjectDao.getById(68268203);
-		System.out.println("After: " + chObject.toString());
-	}
-	
-	private void insertOnH2(CHObject chObject){
-		chObjectDao.add(chObject);
-	}
-	
-	private void insertOnH2recuperaId(CHObject chObject){
-		int aux = chObjectDao.create(chObject);
-		System.out.println(aux);
-	}
-
 	@Override
 	public void run(String... arg0) throws Exception {
 		
 		buildDatabase();
 		List<CHObject> chObjects = decodeJson();
 		
-		System.out.println(chObjectDao.findAll().size());
+		System.out.println(chObjectRepository.findAll().size());
 		for( CHObject aux : chObjects)
-			insertOnH2recuperaId(aux);
-		System.out.println(chObjectDao.findAll().size());
-		
-//		System.out.println(chObjectDao.getById(68268203));
-//		System.out.println(db.hashCode());
-//		query06();  // Using a DAO class
+			chObjectService.save(aux);
+		System.out.println(chObjectRepository.findAll().size());
 	}
 	
     public static void main(String[] args) {
         SpringApplication.run(JsonPopulation.class, args);
     }
-
     
     private EmbeddedDatabase buildDatabase(){
     	EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
 						    		.setType(EmbeddedDatabaseType.H2)
 						    		.addScript("db/sql/create-db.sql")
-//						    		.addScript("db/sql/insert-data.sql")
 						    		.build();
 		return db;
     }
@@ -94,7 +64,7 @@ public class JsonPopulation implements CommandLineRunner {
 		List<Path> files = FileFinder.getFileList(chobjectsDirectory, "*.json");
 			
 		for (Path f : files) {
-	        
+			
 	        File chobjectFile = new File(f.toString());
 	        try {
 				CHObject chobject = new ObjectMapper().readValue(chobjectFile, CHObject. class);
@@ -114,8 +84,8 @@ public class JsonPopulation implements CommandLineRunner {
 				System.out.println(e.getMessage());
 				System.out.println("Unknown I/O error.");
 			}
+	        
 		}
-		
 		return result;
     }
 }

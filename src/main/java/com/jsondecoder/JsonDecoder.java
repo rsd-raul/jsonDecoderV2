@@ -32,7 +32,7 @@ public class JsonDecoder {
 		        
 		        File chobjectFile = new File(f.toString());
 		        try {
-					CHObject chobject = new ObjectMapper().readValue(chobjectFile, CHObject. class);
+					CHObject chobject = new ObjectMapper().readValue(chobjectFile, CHObject.class);
 					System.out.println("\n" + chobject.toString());
 					
 				} catch (JsonParseException e) {

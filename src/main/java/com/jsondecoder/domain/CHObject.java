@@ -4,14 +4,24 @@ package com.jsondecoder.domain;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-
+@Entity
+@Table(name="CHObjects")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CHObject {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String title;
 	@JsonProperty("date")
@@ -21,7 +31,9 @@ public class CHObject {
 	private String description;
 	private String gallery_text;
 
+	@OneToMany(mappedBy="chObjects")
 	private List<Participation> participants;
+	@OneToMany(mappedBy="chObjects")
 	private List<Map<String,Image>> images;
 	
 	public Integer getId() {

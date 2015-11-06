@@ -20,7 +20,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsondecoder.dao.CHObjectDao;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.utilities.FileFinder;
 
@@ -29,7 +28,7 @@ public class CHObjectRepositoryTest {
     private EmbeddedDatabase db;
 
     @Autowired
-	CHObjectDao chObjectDao;
+	CHObjectRepository chObjectDao;
     
     @Before
     public void setUp() {
@@ -52,7 +51,7 @@ public class CHObjectRepositoryTest {
     public void testFindByname() {
 
     	
-    	CHObject cHObject = chObjectDao.getById(68268203);
+    	CHObject cHObject = chObjectDao.findById(68268203);
   
     	Assert.assertNotNull(cHObject);
     	Assert.assertEquals(68268203, cHObject.getId().intValue());

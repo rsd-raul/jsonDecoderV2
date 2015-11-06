@@ -1,8 +1,13 @@
 package com.jsondecoder.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name="Participants")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Participant {
 
@@ -11,7 +16,7 @@ public class Participant {
 	@JsonProperty("person_name")
 	private String name;
 	@JsonProperty("person_date")
-	private String date;
+	private String birth;
 	@JsonProperty("person_url")
 	private String url;
 	
@@ -28,11 +33,11 @@ public class Participant {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDate() {
-		return date;
+	public String getBirth() {
+		return birth;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
 	public String getUrl() {
 		return url;
@@ -43,6 +48,6 @@ public class Participant {
 	
 	@Override
 	public String toString() {
-		return "Participant [id=" + id + ", name=" + name + ", date=" + date + ", url=" + url + "]";
+		return "Participant [id=" + id + ", name=" + name + ", birth=" + birth + ", url=" + url + "]";
 	}
 }
