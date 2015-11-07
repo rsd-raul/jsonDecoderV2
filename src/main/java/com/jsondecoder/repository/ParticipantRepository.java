@@ -20,6 +20,7 @@ public class ParticipantRepository {
 	public Participant findById(int id) {
 		String sql = "SELECT * FROM Participants WHERE id = ?";
 		Participant participant = jdbcTemplate.queryForObject(sql, new Object[] { id }, new ParticipantRowMapper());
+		
 		return participant;
 	}
 	

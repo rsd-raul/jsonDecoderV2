@@ -1,21 +1,31 @@
 package com.jsondecoder.service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jsondecoder.repository.CHObjectRepository;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.domain.Image;
+import com.jsondecoder.domain.Participant;
+import com.jsondecoder.domain.Participation;
+import com.jsondecoder.domain.Role;
+import com.jsondecoder.repository.CHObjectRepository;
 
 @Service
 public class CHObjectService {
 	
 	@Autowired
 	CHObjectRepository chObjectRepository;
+	@Autowired
+	ImageService imageService;
+	@Autowired
+	ParticipantService participantService;
+	@Autowired
+	ParticipationService participationService;
+	@Autowired
+	RoleService roleService;
 	
 	@Autowired
 	public CHObjectService(CHObjectRepository chObjectRepository) {
@@ -29,25 +39,39 @@ public class CHObjectService {
 		chObjectRepository.save(chObject);
 		
 //		•	Add the associated images, if any
-		System.out.println("EL TAMAÑO DE LA LISTA ES: " + chObject.getImages().size());
-		for (Map<String, Image> imageMultipleSizes : chObject.getImages()) {
-			for(String size : imageMultipleSizes.keySet()){
-				Image imageWithSize = imageMultipleSizes.get(size);
-				
-				
-				//TODO AQUI ESTAMOS
-			}	
-			System.out.println("UN SOLO MAPA TIENE: " + imageMultipleSizes.toString());
-		}
-		
+		for (Map<String, Image> multipleSizeImages : chObject.getImages()) 
+			for(String size : multipleSizeImages.keySet()){
+				Image imageForSize = multipleSizeImages.get(size);
+			
+				imageService.save(imageForSize, size);
+				imageService.saveRelation(imageForSize, chObject, size);
+			}
 //		•	For each participation:
+		for (Participation participation : chObject.getParticipants()) {
+					
 //			o	Check if the participant exists
 //					If it does, you have a participant object with the id already set
-//					If it doesn’t, add the participant and retrieve the generated id (see SimpleJdbcInsert for how to do that – will be covered in class)
-//			o	Check if the role exists
-//					If it does, you have a participant object with the id already set
+			Participant participant = participation.getParticipant();
+			try {
+				participantService.findById(participant.getId());
+			} catch (Exception e) {
 //					If it doesn’t, add the participant and retrieve the generated id
+				participantService.save(participant);
+			}
+			
+//			o	Check if the role exists
+//					If it does, you have a role object with the id already set
+			Role role = participation.getRole();
+			try {
+				roleService.findById(role.getId());
+			} catch (Exception e) {
+//					If it doesn’t, add the role and retrieve the generated id
+				roleService.save(role);
+			}
+			
 //			o	Add the participation row
+			participationService.save(participation, chObject);
+		}
 	}
 
 	public CHObject findById(int id) {
@@ -57,23 +81,4 @@ public class CHObjectService {
 	public List<CHObject> findAll() {
 		return chObjectRepository.findAll();
 	}
-	
-
-	
-	
-	
-	//TODO esto se ocupara de las operaciones complejas
-/*
-	for each CH Object, you need to do the following:
-		•	Add the object
-		•	Add the associated images, if any
-		•	For each participation:
-			o	Check if the participant exists
-					If it does, you have a participant object with the id already set
-					If it doesn’t, add the participant and retrieve the generated id (see SimpleJdbcInsert for how to do that – will be covered in class)
-			o	Check if the role exists
-					If it does, you have a participant object with the id already set
-					If it doesn’t, add the participant and retrieve the generated id
-			o	Add the participation row
-*/
 }

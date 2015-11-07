@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.domain.Image;
 import com.jsondecoder.rowmapper.ImageRowMapper;
 
@@ -26,22 +27,30 @@ public class ImageRepository {
 		return image;
 	}
 	
-	public void save(Image image) {
+	public void save(Image image, String size) {
 		if (image.getId() != 0) {
 //			update(image);
-			add(image);
+			add(image, size);
 		} else {
-			add(image);
+			add(image, size);
 		}
 	}
 	
-	public void add(Image image) {
-		String sql = "INSERT INTO Images (id, url, width, height, is_primary) VALUES (?, ?, ?, ?, ?)";
+	public void add(Image image, String size) {
+		String sql = "INSERT INTO Images (id, url, width, height, is_primary, size) VALUES (?, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[] { image.getId(), 
 												image.getUrl(),
 												image.getWidth(),
 												image.getHeight(),
-												image.getIs_primary()} );
+												image.getIs_primary(),
+												size} );
+	}
+	
+	public void addRelation(Image image, CHObject chObject, String size) {
+		String sql = "INSERT INTO CHObjects_Images (chObject_id, image_id, size) VALUES (?, ?, ?)";
+		jdbcTemplate.update(sql, new Object[] { chObject.getId(), 
+												image.getId(),
+												size} );
 	}
 		
 	public void update(Image image) {

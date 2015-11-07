@@ -7,11 +7,18 @@ import org.springframework.stereotype.Component;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.domain.Participation;
 import com.jsondecoder.rowmapper.ParticipationRowMapper;
+import com.jsondecoder.service.ParticipantService;
+import com.jsondecoder.service.RoleService;
 
 @Component
 public class ParticipationRepository {
 	
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	ParticipantService participantService;
+	@Autowired
+	RoleService roleService;
 	
 	@Autowired
 	public ParticipationRepository(JdbcTemplate jdbcTemplate) {
@@ -20,7 +27,7 @@ public class ParticipationRepository {
 	
 	public Participation findById(int chObject_id, int participant_id, int role_id) {
 		String sql = "SELECT * FROM CHObjects_Participants_Roles WHERE chObject_id = ? AND participant_id = ? AND role_id = ? ";
-		Participation participation = jdbcTemplate.queryForObject(sql, new Object[] { chObject_id, participant_id, role_id }, new ParticipationRowMapper());
+		Participation participation = jdbcTemplate.queryForObject(sql, new Object[] { chObject_id, participant_id, role_id }, new ParticipationRowMapper(participantService, roleService));
 		return participation;
 	}
 	
@@ -32,7 +39,7 @@ public class ParticipationRepository {
 		String sql = "INSERT INTO CHObjects_Participants_Roles (chObject_id, participant_id, role_id) VALUES (?, ?, ?)";
 		jdbcTemplate.update(sql, new Object[] { chObject.getId(),
 												participation.getParticipant().getId(), 
-												participation.getRole()} );
+												participation.getRole().getId()} );
 	}
 		
 //	public void update(Participation participation) {
@@ -49,6 +56,6 @@ public class ParticipationRepository {
 	
 	public List<Participation> findAll() {
 		String sql = "SELECT * FROM CHObjects_Participants_Roles";
-		return jdbcTemplate.query(sql, new Object[] { }, new ParticipationRowMapper());
+		return jdbcTemplate.query(sql, new Object[] { }, new ParticipationRowMapper(participantService, roleService));
 	} 
 }

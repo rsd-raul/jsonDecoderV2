@@ -20,6 +20,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.repository.CHObjectRepository;
+import com.jsondecoder.repository.ImageRepository;
+import com.jsondecoder.repository.ParticipantRepository;
+import com.jsondecoder.repository.ParticipationRepository;
+import com.jsondecoder.repository.RoleRepository;
 import com.jsondecoder.service.CHObjectService;
 import com.jsondecoder.utilities.FileFinder;
 
@@ -30,6 +34,14 @@ public class JsonPopulation implements CommandLineRunner {
 	@Autowired
 	CHObjectRepository chObjectRepository;
 	@Autowired
+	ImageRepository imageRepository;
+	@Autowired
+	ParticipantRepository participantRepository;
+	@Autowired
+	ParticipationRepository participationRepository;
+	@Autowired
+	RoleRepository roleRepository;
+	@Autowired
 	CHObjectService chObjectService;
 	
 	@Override
@@ -39,9 +51,28 @@ public class JsonPopulation implements CommandLineRunner {
 		List<CHObject> chObjects = decodeJson();
 		
 		System.out.println(chObjectRepository.findAll().size());
+		System.out.println(imageRepository.findAll().size());
+		System.out.println(participantRepository.findAll().size());
+		System.out.println(roleRepository.findAll().size());
+		System.out.println(participationRepository.findAll().size());
+		
+		
+
+		
+		
 		for( CHObject aux : chObjects)
 			chObjectService.save(aux);
+		
+		
+		
 		System.out.println(chObjectRepository.findAll().size());
+		System.out.println(imageRepository.findAll().size());
+		System.out.println(participantRepository.findAll().size());
+		System.out.println(roleRepository.findAll().size());
+		System.out.println(participationRepository.findAll().size());
+		
+		
+		
 	}
 	
     public static void main(String[] args) {

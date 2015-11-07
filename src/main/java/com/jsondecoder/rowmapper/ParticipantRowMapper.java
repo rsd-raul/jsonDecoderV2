@@ -13,10 +13,10 @@ public class ParticipantRowMapper implements RowMapper<Participant> {
 	public Participant mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Participant participant = new Participant();
 		
-		participant.setId(rs.getInt("id"));
-		participant.setName(rs.getString("name"));
-		participant.setBirth(rs.getString("birth"));
-		participant.setUrl(rs.getString("url"));
+					participant.setId(rs.getInt("id"));
+					participant.setName(rs.getString("name"));
+					participant.setBirth(rs.getString("birth"));
+					participant.setUrl(rs.getString("url"));
 
 		return participant;
 	}

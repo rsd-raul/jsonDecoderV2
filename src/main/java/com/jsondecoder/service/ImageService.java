@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jsondecoder.repository.ImageRepository;
+import com.jsondecoder.domain.CHObject;
 import com.jsondecoder.domain.Image;
 
 @Service
@@ -20,10 +21,14 @@ public class ImageService {
 	}
 	
 
-	public void save(Image image) {
-		imageRepository.save(image);
+	public void save(Image image, String size) {
+		imageRepository.save(image, size);
 	}
-
+	
+	public void saveRelation(Image image, CHObject chObject, String size) {
+		imageRepository.addRelation(image, chObject, size);
+	}
+	
 	public Image findById(int id) {
 		return imageRepository.findById(id);
 	}
@@ -31,4 +36,6 @@ public class ImageService {
 	public List<Image> findAll() {
 		return imageRepository.findAll();
 	}
+
+
 }
