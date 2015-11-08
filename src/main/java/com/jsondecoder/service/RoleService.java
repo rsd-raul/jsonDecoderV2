@@ -19,7 +19,10 @@ public class RoleService {
 		this.roleRepository = roleRepository;
 	}
 	
-
+	public void update(Role role) {
+		roleRepository.update(role);
+	}
+	
 	public void save(Role role) {
 		roleRepository.save(role);
 	}
