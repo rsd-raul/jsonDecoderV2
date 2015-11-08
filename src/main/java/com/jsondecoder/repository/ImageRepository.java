@@ -21,12 +21,12 @@ public class ImageRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	public Image findById(int id) {
-		String sql = "SELECT * FROM Images WHERE id = ?";
-		Image image = jdbcTemplate.queryForObject(sql, new Object[] { id }, new ImageRowMapper());
+	public Image findById(int id, String size) {
+		String sql = "SELECT * FROM Images WHERE id = ? and size = ?";
+		Image image = jdbcTemplate.queryForObject(sql, new Object[] { id, size }, new ImageRowMapper());
 		return image;
 	}
-	
+
 	public void save(Image image, String size) {
 		if (image.getId() != 0) {
 //			update(image);
@@ -67,38 +67,4 @@ public class ImageRepository {
 		String sql = "SELECT * FROM Images";
 		return jdbcTemplate.query(sql, new Object[] { }, new ImageRowMapper());
 	}
-	
-
-	
-	
-	/*	TODO aqui estamos, intentado recuperar una id con IdbcInsert
-	 * 
-	 * EL TRUCO ESTA EN QUE HACE LA CONSULTA CORRECTAMENTE, PERO AL NO PONERLE EL GENERATED CORRECTO
-	 * NO ES CAPAZ DE RECUPERAR
-	 * 
-	 * TE DICEN QUE RECUPERES LA ID GENERADA PARA PARTICIPANTE... PUEDE QUE VALGA POR DEFECTO
-	 * 
-	 * */
-	
-//	private SimpleJdbcInsert insertEmp;
-//	
-//	@Autowired
-//    public void setDataSource(DataSource dataSource) {
-//        this.insertEmp = new SimpleJdbcInsert(dataSource).withTableName("Images").usingGeneratedKeyColumns("id");
-//    }
-//	
-//	public int create(Image image) {  
-//        Map<String, Object> parameters = new HashMap<String, Object>();  
-//
-//        parameters.put("id", image.getId());
-//        parameters.put("title", image.getTitle());
-//        parameters.put("dateObject", image.getDateObject());
-//        parameters.put("medium", image.getMedium());
-//        parameters.put("creditline", image.getCreditline());
-//        parameters.put("description", image.getDescription());
-//        parameters.put("gallery_text", image.getGallery_text());
-//        Number empid = insertEmp.executeAndReturnKey(parameters);  
-//        
-//        return empid.intValue();
-//    } 
 }

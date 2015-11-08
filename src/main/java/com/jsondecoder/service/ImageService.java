@@ -29,8 +29,8 @@ public class ImageService {
 		imageRepository.addRelation(image, chObject, size);
 	}
 	
-	public Image findById(int id) {
-		return imageRepository.findById(id);
+	public Image findById(int id, String size) {
+		return imageRepository.findById(id, size);
 	}
 
 	public List<Image> findAll() {

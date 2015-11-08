@@ -1,20 +1,13 @@
 package com.jsondecoder.repository;
 
-import java.util.HashMap;
-
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
 
 //import java.util.HashMap;
 import java.util.List;
-//import java.util.Map;
-import java.util.Map;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 //import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 //import org.springframework.jdbc.core.RowMapper;
 //import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -77,41 +70,4 @@ public class CHObjectRepository {
 		String sql = "SELECT * FROM CHObjects";
 		return jdbcTemplate.query(sql, new Object[] { }, new CHObjectRowMapper());
 	}
-	
-	
-	
-	
-	
-	
-	
-	/*	TODO aqui estamos, intentado recuperar una id con IdbcInsert
-	 * 
-	 * EL TRUCO ESTA EN QUE HACE LA CONSULTA CORRECTAMENTE, PERO AL NO PONERLE EL GENERATED CORRECTO
-	 * NO ES CAPAZ DE RECUPERAR
-	 * 
-	 * TE DICEN QUE RECUPERES LA ID GENERADA PARA PARTICIPANTE... PUEDE QUE VALGA POR DEFECTO
-	 * 
-	 * */
-	
-	private SimpleJdbcInsert insertEmp;
-	
-	@Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.insertEmp = new SimpleJdbcInsert(dataSource).withTableName("CHObjects").usingGeneratedKeyColumns("id");
-    }
-	
-	public int create(CHObject chObject) {  
-        Map<String, Object> parameters = new HashMap<String, Object>();  
-
-        parameters.put("id", chObject.getId());
-        parameters.put("title", chObject.getTitle());
-        parameters.put("dateObject", chObject.getDateObject());
-        parameters.put("medium", chObject.getMedium());
-        parameters.put("creditline", chObject.getCreditline());
-        parameters.put("description", chObject.getDescription());
-        parameters.put("gallery_text", chObject.getGallery_text());
-        Number empid = insertEmp.executeAndReturnKey(parameters);  
-        
-        return empid.intValue();
-    } 
 }

@@ -45,7 +45,7 @@ public class ParticipantRepository {
 	}
 		
 	public void update(Participant participant) {
-		String sql = "UPDATE Participants SET title = ?, dateObject = ?, medium = ?, creditline = ?, description = ?, gallery_text = ? WHERE id = ?";
+		String sql = "UPDATE Participants SET name = ?, birth = ?, url = ? WHERE id = ?";
 		jdbcTemplate.update(sql, new Object[] {	participant.getName(),
 												participant.getBirth(),
 												participant.getUrl(),

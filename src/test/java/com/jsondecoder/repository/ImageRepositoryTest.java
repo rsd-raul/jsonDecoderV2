@@ -13,55 +13,65 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.jsondecoder.DefaultConfig;
 import com.jsondecoder.domain.CHObject;
+import com.jsondecoder.domain.Image;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = DefaultConfig.class)
 @ActiveProfiles("test")
 @DirtiesContext(classMode=ClassMode.AFTER_EACH_TEST_METHOD)
-public class CHObjectRepositoryTest {
+public class ImageRepositoryTest {
 
     @Autowired
+	ImageRepository imageRepository;
+    @Autowired
 	CHObjectRepository chObjectRepository;
- 
+    
 	@Test
     public void testFindById() {
-    	CHObject chObject = chObjectRepository.findById(68268203);
+    	Image image = imageRepository.findById(90403, "b");
   
-    	Assert.assertNotNull(chObject);
-    	Assert.assertEquals(68268203, chObject.getId().intValue());
+    	Assert.assertNotNull(image);
+    	Assert.assertEquals(90403, image.getId());
     }
 
 	@Test
 	public void findAll() {
-		List<CHObject> chObjects = chObjectRepository.findAll();
+		List<Image> images = imageRepository.findAll();
 		
-		assertEquals(35, chObjects.size());
+		assertEquals(200, images.size());
 	}
 	
 	@Test
 	public void add() {		
-		CHObject chObject = new CHObject();
-		chObject.setCreditline("testing");
-		chObject.setDescription("testing");
-		chObject.setDateObject("testing");
-		chObject.setGallery_text("testing");
-		chObject.setId(123456789);
-		chObject.setMedium("testing");
-		chObject.setTitle("testing");
+		Image image = new Image();
+		image.setHeight(1234);
+		image.setId(1234);
+		image.setIs_primary(1);
+		image.setUrl("testing");
+		image.setWidth(1234);
 		
-		chObjectRepository.add(chObject);
+		imageRepository.add(image, "b");
 		
-		List<CHObject> chObjects = chObjectRepository.findAll();
-		assertEquals(36, chObjects.size());
+		List<Image> images = imageRepository.findAll();
+		assertEquals(201, images.size());
+	}
+	
+	@Test
+	public void addRelation() {		
+		Image image = imageRepository.findById(90403, "b");
+		CHObject chObject = chObjectRepository.findById(68268203);
+		
+		imageRepository.addRelation(image, chObject, "b");
 	}
 	
 	@Test
 	public void update() {		
-		CHObject chObject = chObjectRepository.findById(68268203);
-		chObject.setDescription("testing");
-		chObjectRepository.update(chObject);
+		Image image = imageRepository.findById(90403, "b");
+		image.setHeight(333);
+		imageRepository.update(image);
 		
-		chObject = chObjectRepository.findById(68268203);
-		assertEquals("testing", chObject.getDescription());
+		image = imageRepository.findById(90403, "b");
+		assertEquals(333, image.getHeight());
 	}
+	
 }

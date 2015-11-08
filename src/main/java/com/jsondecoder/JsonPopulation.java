@@ -46,38 +46,32 @@ public class JsonPopulation implements CommandLineRunner {
 	
 	@Override
 	public void run(String... arg0) throws Exception {
+		List<CHObject> chObjects;
 		
 		buildDatabase();
-		List<CHObject> chObjects = decodeJson();
 		
-		System.out.println(chObjectRepository.findAll().size());
-		System.out.println(imageRepository.findAll().size());
-		System.out.println(participantRepository.findAll().size());
-		System.out.println(roleRepository.findAll().size());
-		System.out.println(participationRepository.findAll().size());
+		chObjects = decodeJson();
 		
-		
+		getDatabaseStatus("BEFORE");
 
+		populateDatabase(chObjects);
 		
-		
-		for( CHObject aux : chObjects)
-			chObjectService.save(aux);
-		
-		
-		
-		System.out.println(chObjectRepository.findAll().size());
-		System.out.println(imageRepository.findAll().size());
-		System.out.println(participantRepository.findAll().size());
-		System.out.println(roleRepository.findAll().size());
-		System.out.println(participationRepository.findAll().size());
-		
-		
-		
+		getDatabaseStatus("AFTER");
 	}
 	
-    public static void main(String[] args) {
-        SpringApplication.run(JsonPopulation.class, args);
-    }
+	private void getDatabaseStatus(String status){
+		System.out.println(	"Database status " 	+ status + " population \n" + 
+							" Objects: " 		+ chObjectRepository.findAll().size() +
+							" Images: " 		+ imageRepository.findAll().size() +
+							" Participants: " 	+ participantRepository.findAll().size() +
+							" Roles: " 			+ roleRepository.findAll().size() +
+							" Particpations: " 	+ participationRepository.findAll().size());
+	}
+	
+	private void populateDatabase(List<CHObject> chObjects){
+		for( CHObject aux : chObjects)
+			chObjectService.save(aux);
+	}
     
     private EmbeddedDatabase buildDatabase(){
     	EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
@@ -99,7 +93,6 @@ public class JsonPopulation implements CommandLineRunner {
 	        File chobjectFile = new File(f.toString());
 	        try {
 				CHObject chobject = new ObjectMapper().readValue(chobjectFile, CHObject. class);
-				System.out.println("\n" + chobject.toString());
 				result.add(chobject);
 				
 			} catch (JsonParseException e) {
@@ -118,5 +111,9 @@ public class JsonPopulation implements CommandLineRunner {
 	        
 		}
 		return result;
+    }
+    
+    public static void main(String[] args) {
+        SpringApplication.run(JsonPopulation.class, args);
     }
 }

@@ -5,11 +5,8 @@ import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import com.jsondecoder.domain.Participation;
-import com.jsondecoder.repository.ParticipantRepository;
-import com.jsondecoder.repository.RoleRepository;
 import com.jsondecoder.service.ParticipantService;
 import com.jsondecoder.service.RoleService;
 
