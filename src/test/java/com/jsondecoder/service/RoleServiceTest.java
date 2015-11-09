@@ -70,7 +70,7 @@ public class RoleServiceTest {
 		roleService.save(role);
 		
 		List<Role> roles = roleService.findAll();
-		assertEquals(3, roles.size());
+		assertEquals(2, roles.size());
 	}
 	
 	@Test

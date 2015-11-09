@@ -90,22 +90,16 @@ public class JsonPopulation implements CommandLineRunner {
 			
 		for (Path f : files) {
 			
-	        File chobjectFile = new File(f.toString());
+	        File chObjectFile = new File(f.toString());
 	        try {
-				CHObject chobject = new ObjectMapper().readValue(chobjectFile, CHObject. class);
+				CHObject chobject = new ObjectMapper().readValue(chObjectFile, CHObject. class);
 				result.add(chobject);
 				
 			} catch (JsonParseException e) {
-				System.out.println(e.getLocalizedMessage());
-				System.out.println(e.getMessage());
 				System.out.println("Error parsing the file.");
 			} catch (JsonMappingException e) {
-				System.out.println(e.getLocalizedMessage());
-				System.out.println(e.getMessage());
 				System.out.println("Error mapping to Java object.");
 			} catch (IOException e) {
-				System.out.println(e.getLocalizedMessage());
-				System.out.println(e.getMessage());
 				System.out.println("Unknown I/O error.");
 			}
 	        
