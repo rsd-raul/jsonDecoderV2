@@ -26,7 +26,6 @@ public class ParticipantRepository {
 	
 	public void save(Participant participant) {
 		if (participant.getId() != 0) {
-//			update(participant);
 			add(participant);
 		} else {
 			add(participant);

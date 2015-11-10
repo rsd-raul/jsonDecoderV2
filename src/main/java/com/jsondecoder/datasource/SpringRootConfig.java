@@ -19,12 +19,4 @@ public class SpringRootConfig {
 	public JdbcTemplate getJdbcTemplate() {
 		return new JdbcTemplate(dataSource);
 	}
-	
-//	@PostConstruct
-//	public void startDBManager() {
-//		
-//		//h2
-//		DatabaseManagerSwing.main(new String[] { "--url", "jdbc:h2:mem:testdb", "--user", "sa", "--password", "" });
-//
-//	}
 }

@@ -25,7 +25,6 @@ public class RoleRepository {
 	
 	public void save(Role role) {
 		if (role.getId() != 0) {
-//			update(role);
 			add(role);
 		} else {
 			add(role);

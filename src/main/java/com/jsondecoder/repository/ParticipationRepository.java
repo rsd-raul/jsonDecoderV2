@@ -41,18 +41,6 @@ public class ParticipationRepository {
 												participation.getParticipant().getId(), 
 												participation.getRole().getId()} );
 	}
-		
-//	public void update(Participation participation) {
-//		String sql = "UPDATE CHObjects_Participants_Roles SET title = ?, dateObject = ?, medium = ?, creditline = ?, description = ?, gallery_text = ? WHERE id = ?";
-//		jdbcTemplate.update(sql, new Object[] { participation.getTitle(),
-//												participation.getDateObject(),
-//												participation.getMedium(),
-//												participation.getCreditline(),
-//												participation.getDescription(),
-//												participation.getGallery_text(),
-//												
-//												participation.getId()} );
-//	}
 	
 	public List<Participation> findAll() {
 		String sql = "SELECT * FROM CHObjects_Participants_Roles";
